@@ -1,12 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
 </head>
+
 <body>
-    
+    <div class="container output">
+        <template id="filmTemplate">
+            <div class="film">
+                <h2>{{original_title}}</h2>
+                <img src={{{backdrop_path}}}>
+                <p>{{overview}}</p>
+        </template>
+    </div>
+
+
+
+
+
+    <script>
+        // let output = document.querySelector(`.output`);
+        let template = document.querySelector("#filmTemplate").innerHTML;
+
+
+        let search = prompt(`Write the name of film`);
+        let url = `https://api.themoviedb.org/3/search/multi?api_key=3f7c2de3ba0c25a5eeda6588b31fa074&language=en-US&query=${search}&page=1&include_adult=false`
+
+        let promise = fetch(url)
+            .then(response => response.json())
+            .then(json => renderJson(json))
+
+        function renderJson(json) {
+            let filmsArray = json.results
+            filmsArray.forEach(film => {
+                let renderedHtml = Mustache.render(template, film);
+                document.body.innerHTML += renderedHtml;
+                console.log(film);
+            });
+        };
+        
+
+
+
+//opened question about image download 
+
+
+
+        //example of Obj
+        // { adult: false, backdrop_path: "/t3LicFpYHeYpwqm7L5wDpd22hL5.jpg", genre_ids: (2) […], id: 671, media_type: "movie", original_language: "en", original_title: "Harry Potter and the Philosopher's Stone", overview: "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths—and about the villain who's to blame.", popularity: 229.253, poster_path: "/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg", … }
+    </script>
+     
+
+
+    <script src="mustache.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
