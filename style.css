@@ -1,0 +1,21 @@
+.header{
+    text-align: center;
+    padding: 10px;
+}
+.search{
+    width: 50%;
+    margin: 20px auto ;
+    padding: 10px;
+}
+.picture{
+    max-width: 500px;
+    max-height: 281px;
+    margin: 30px;
+}
+.movie{
+    width: 50%;
+    margin: auto;
+    float: left;
+    text-align: center;
+    padding: 20px;
+}
