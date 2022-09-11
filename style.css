@@ -1,24 +1,35 @@
-.header{
+.header {
     text-align: center;
     padding: 20px;
 }
-.search{
+
+.search {
     width: 40%;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px;
     padding: 10px;
 }
-.picture{
+
+.picture {
     max-width: 500px;
     max-height: 281px;
     margin: 30px;
 }
-.movie{
+
+.movie {
     width: 50%;
     margin: auto;
     float: left;
     text-align: center;
     padding: 20px;
 }
-.buttons{
+
+.buttons {
     text-align: center;
+}
+
+.title {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

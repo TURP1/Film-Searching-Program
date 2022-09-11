@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="row">
+    <div>
         <div class="col-md-12 header">
             <h1>Find the movie</h1>
         </div>
@@ -43,9 +43,9 @@
             const html = `
             <div>
                 <img class="picture" src='${mappingData.backdrop_path}'></img>
-                <h2>${mappingData.title}</h2>
+                <h2 class = "title">${mappingData.title}</h2>
                 <h5>${mappingData.date}</h5>
-                <h4>${mappingData.popularity}</h4>
+                <h4>${mappingData.rating}</h4>
                 
             </div>
             `
@@ -53,12 +53,13 @@
         };
 
         function mapData(data) {
-            
+
             return {
-                backdrop_path: getPictureUrl(),
                 title: data.original_title || data.name || `Unknown`,
-                popularity: data.popularity ,
-                date: data.release_date || data.first_air_date || `Unknown`
+                backdrop_path: getPictureUrl(),
+                rating: data.vote_average || `No Rating`,
+                date: data.release_date  || `Unknown`
+                // || data.first_air_date
             }
             function getPictureUrl() {
                 const url = data.backdrop_path;
@@ -83,7 +84,6 @@
             };
 
             renderMovies(data) {
-                // debugger
                 this.data = data;
                 this.fragment = document.createDocumentFragment();
 
@@ -140,24 +140,76 @@
 
         btnSort.forEach(button => {
             button.addEventListener(`click`, () => {
-                sortingBy(button.textContent);
+                sortingBySelector(button.textContent);
             }
             );
         });
 
-        function sortingBy(selectorForSort){
-            if (selectorForSort == `Show Most Popular`){
-                console.log(`popular`)
+        function sortingBySelector(selectorForSort) {
+            if (selectorForSort == `Show Most Popular`) {
+                let arrayToSort = { ...movieList.data };
+                sortedMassive = sortingRating(arrayToSort);
+                movieList.renderMovies(sortedMassive);
+                movieList.drawToDom(movieOutput);
             };
-            if (selectorForSort == `Show New`){
-                console.log(`new`)
+
+            if (selectorForSort == `Show New`) {
+                let arrayToSort = { ...movieList.data };
+                sortedMassive = sortingNew(arrayToSort);
+                movieList.renderMovies(sortedMassive);
+                movieList.drawToDom(movieOutput);
             };
-            if (selectorForSort == `Show Old`){
-                console.log(`old`)
+
+            if (selectorForSort == `Show Old`) {
+                let arrayToSort = { ...movieList.data };
+                sortedMassive = sortingOld(arrayToSort);
+                movieList.renderMovies(sortedMassive);
+                movieList.drawToDom(movieOutput);
             };
 
         }
 
+        function sortingRating(arrayToSort) {
+            arrayToSort.results.sort((a, b) => {
+                if (a.vote_average < b.vote_average) {
+                    return 1
+                };
+                if (a.vote_average > b.vote_average){
+                    return -1
+                };
+
+            })
+            return arrayToSort;
+        }
+
+        function sortingNew(arrayToSort) {
+            
+            arrayToSort.results.sort((a, b) => {
+                    if (new Date(a.release_date) > new Date(b.release_date)){
+                    return -1;
+                };
+                if (new Date(a.release_date) < new Date(b.release_date)) {
+                    return 1;
+                };
+            })
+            return arrayToSort;
+        };
+
+        function sortingOld(arrayToSort) {
+            
+            arrayToSort.results.sort((a, b) => {
+                    if (new Date(a.release_date) < new Date(b.release_date)){
+                    return -1;
+                };
+                if (new Date(a.release_date) > new Date(b.release_date)) {
+                    return 1;
+                };
+            })
+            return arrayToSort;
+        };
+
+
+        //Need to fix Undefined
 
 
 
@@ -167,7 +219,8 @@
 
 
 
-       //I should work about responcive design
+
+       //I should work on responcive design
     </script>
 
 
