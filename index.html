@@ -18,19 +18,14 @@
             <h1>Find the movie</h1>
         </div>
         <input class="form-control search" type="text">
+        <div class="buttons">
+            <button type="button" class="btn btn-outline-dark btn-sort">Show Most Popular</button>
+            <button type="button" class="btn btn-outline-dark btn-sort">Show New</button>
+            <button type="button" class="btn btn-outline-dark btn-sort">Show Old</button>
+
+        </div>
     </div>
-    <div class="container output">
-        <!-- <template id="filmTemplate">
-            <div class="film">
-                <h2>{{original_title}}</h2>
-                <img src={{{backdrop_path}}}>
-                <p>{{overview}}</p>
-        </template> -->
-    </div>
-
-
-
-
+    <div class="container output"></div>
 
     <script>
         //config
@@ -50,6 +45,7 @@
                 <img class="picture" src='${mappingData.backdrop_path}'></img>
                 <h2>${mappingData.title}</h2>
                 <h3>${mappingData.popularity}</h3>
+                <h3>${mappingData.date}</h3>
             </div>
             `
             return html
@@ -59,7 +55,8 @@
             return {
                 backdrop_path: getPictureUrl(),
                 title: data.original_title || data.name || `Unknown`,
-                popularity: data.popularity
+                popularity: data.popularity,
+                date: release_date
             }
             function getPictureUrl() {
                 const url = data.backdrop_path;
@@ -132,7 +129,40 @@
                     movieList.drawToDom(movieOutput);
 
                 });
-        })
+        });
+
+        //Film sorting by selectors
+
+        let btnSort = document.querySelectorAll(`.btn-sort`);
+
+        btnSort.forEach(button => {
+            button.addEventListener(`click`, () => {
+                sortingBy(button.textContent);
+            }
+            );
+        });
+
+        function sortingBy(selectorForSort){
+            if (selectorForSort == `Show Most Popular`){
+                console.log(`popular`)
+            };
+            if (selectorForSort == `Show New`){
+                console.log(`new`)
+            };
+            if (selectorForSort == `Show Old`){
+                console.log(`old`)
+            };
+
+        }
+
+
+
+
+
+
+
+
+
 
        //I should work about responcive design
     </script>
