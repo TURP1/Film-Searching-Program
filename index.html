@@ -44,19 +44,21 @@
             <div>
                 <img class="picture" src='${mappingData.backdrop_path}'></img>
                 <h2>${mappingData.title}</h2>
-                <h3>${mappingData.popularity}</h3>
-                <h3>${mappingData.date}</h3>
+                <h5>${mappingData.date}</h5>
+                <h4>${mappingData.popularity}</h4>
+                
             </div>
             `
             return html
         };
 
         function mapData(data) {
+            
             return {
                 backdrop_path: getPictureUrl(),
                 title: data.original_title || data.name || `Unknown`,
-                popularity: data.popularity,
-                date: release_date
+                popularity: data.popularity ,
+                date: data.release_date || data.first_air_date || `Unknown`
             }
             function getPictureUrl() {
                 const url = data.backdrop_path;
@@ -81,6 +83,7 @@
             };
 
             renderMovies(data) {
+                // debugger
                 this.data = data;
                 this.fragment = document.createDocumentFragment();
 
