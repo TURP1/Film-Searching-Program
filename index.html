@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Search Movie</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
@@ -19,7 +19,7 @@
         </div>
         <input class="form-control search" type="text">
         <div class="buttons">
-            <button type="button" class="btn btn-outline-dark btn-sort">Show Most Popular</button>
+            <button type="button" class="btn btn-outline-dark btn-sort">Show High Rated</button>
             <button type="button" class="btn btn-outline-dark btn-sort">Show New</button>
             <button type="button" class="btn btn-outline-dark btn-sort">Show Old</button>
 
@@ -58,7 +58,7 @@
                 title: data.original_title || data.name || `Unknown`,
                 backdrop_path: getPictureUrl(),
                 rating: data.vote_average || `No Rating`,
-                date: data.release_date  || `Unknown`
+                date: data.release_date || `Unknown`
                 // || data.first_air_date
             }
             function getPictureUrl() {
@@ -146,7 +146,7 @@
         });
 
         function sortingBySelector(selectorForSort) {
-            if (selectorForSort == `Show Most Popular`) {
+            if (selectorForSort == `Show High Rated`) {
                 let arrayToSort = { ...movieList.data };
                 sortedMassive = sortingRating(arrayToSort);
                 movieList.renderMovies(sortedMassive);
@@ -171,10 +171,18 @@
 
         function sortingRating(arrayToSort) {
             arrayToSort.results.sort((a, b) => {
+                //solving undefined problem
+                if (a.vote_average === undefined) {
+                    a.vote_average = null;
+                };
+                if (b.vote_average === undefined) {
+                    b.vote_average = null;
+                };
+
                 if (a.vote_average < b.vote_average) {
                     return 1
                 };
-                if (a.vote_average > b.vote_average){
+                if (a.vote_average > b.vote_average) {
                     return -1
                 };
 
@@ -183,9 +191,17 @@
         }
 
         function sortingNew(arrayToSort) {
-            
+
             arrayToSort.results.sort((a, b) => {
-                    if (new Date(a.release_date) > new Date(b.release_date)){
+                //solving undefined problem
+                if (a.release_date === undefined) {
+                    a.release_date = null;
+                };
+                if (b.release_date === undefined) {
+                    b.release_date = null;
+                };
+
+                if (new Date(a.release_date) > new Date(b.release_date)) {
                     return -1;
                 };
                 if (new Date(a.release_date) < new Date(b.release_date)) {
@@ -196,9 +212,16 @@
         };
 
         function sortingOld(arrayToSort) {
-            
+
             arrayToSort.results.sort((a, b) => {
-                    if (new Date(a.release_date) < new Date(b.release_date)){
+                //solving undefined problem
+                if (a.release_date === undefined) {
+                    a.release_date = Infinity;
+                };
+                if (b.release_date === undefined) {
+                    b.release_date = Infinity;
+                };
+                if (new Date(a.release_date) < new Date(b.release_date)) {
                     return -1;
                 };
                 if (new Date(a.release_date) > new Date(b.release_date)) {
@@ -207,18 +230,6 @@
             })
             return arrayToSort;
         };
-
-
-        //Need to fix Undefined
-
-
-
-
-
-
-
-
-
 
        //I should work on responcive design
     </script>
