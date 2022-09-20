@@ -103,4 +103,10 @@ body {
     margin-top: 30px;
 
 }
+.displayDetails{
+    display: none;
+}
+.page-control{
+    margin-bottom: 30px;
+}
 

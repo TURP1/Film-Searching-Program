@@ -17,18 +17,24 @@
         <div class="col-md-12 header">
             <h1>Find the movie</h1>
         </div>
-        <input class="form-control search" type="text">
-        <div class="buttons">
-            <button type="button" class="btn btn-outline-dark btn-sort">Show High Rated</button>
-            <button type="button" class="btn btn-outline-dark btn-sort">Show New</button>
-            <button type="button" class="btn btn-outline-dark btn-sort">Show Old</button>
-
+        <div class="page-control">
+            <input class="form-control search" type="text">
+            <div class="buttons">
+                <button type="button" class="btn btn-outline-dark btn-sort">Show High Rated</button>
+                <button type="button" class="btn btn-outline-dark btn-sort">Show New</button>
+                <button type="button" class="btn btn-outline-dark btn-sort">Show Old</button>
+            </div>
         </div>
+
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid displayList">
         <div class="output row d-flex flex-row "></div>
     </div>
+    <div class="container-fluid displayDetails">
+        <div class="outputDetails row d-flex flex-row "></div>
+    </div>
+    
 
     <script>
 
@@ -209,7 +215,7 @@
                 </div>
             </div>
             <div class="button-back text-center">
-                <button type="button" class="btn btn-dark">
+                <button type="button" class="btn btn-dark back">
                     <h1>Back</h1>
                 </button>
             </div>
@@ -276,7 +282,7 @@
                 };
                 return age;
             };
-            function getRating(){
+            function getRating() {
                 const rating = data.vote_average;
                 return rating.toFixed(1);
             }
@@ -305,7 +311,13 @@
         //main
 
         const input = document.querySelector(`.search`);
-
+        const outputDetails = document.querySelector(`.outputDetails`);
+        const body = document.querySelector(`body`);
+        const pageControl = document.querySelector(`.page-control`);
+        const header = document.querySelector(`.header`);
+        let backBtn = document.querySelector(`.button-back`);
+        const displayList = document.querySelector(`.displayList`);
+        const displayDetails = document.querySelector(`.displayDetails`)
         const movieOutput = document.querySelector(`.output`);
         const movieList = new MovieList();
 
@@ -319,11 +331,14 @@
             getVideoByText(searchText)
                 .then(results => {
                     movieList.renderMoviesFrontSide(results);
-
                     movieList.drawToDom(movieOutput);
+                    cardDetails()
+                });
+        });
 
-                    //card after fetch
-                    let cards = document.querySelectorAll(`.movie`);
+         //card after fetch
+         function cardDetails(){
+            let cards = document.querySelectorAll(`.movie`);
                     cards.forEach(card => {
                         card.addEventListener(`click`, function (e) {
                             e.preventDefault();
@@ -334,15 +349,33 @@
                             queryMovieOrTv = filmOrTv;
                             getVideoById(filmId)
                                 .then(result => {
-                                    console.log(result);
                                     const movieCard = new MovieCard();
                                     movieCard.renderMoviesCard(result);
-                                    movieCard.drawToDom(document.querySelector(`body`));
+                                    pageStyleOnDetails();
+                                    movieCard.drawToDom(outputDetails);
+                                    document.querySelector(`.back`).addEventListener(`click`,
+                                    ()=> pageStyleOnList()); 
                                 });
                         });
                     });
-                });
-        });
+         }
+                    
+
+        function pageStyleOnDetails() {
+            header.style.backgroundColor = "black";
+            header.style.color = "white";
+            pageControl.style.display = "none";
+            displayList.style.display = "none";
+            displayDetails.style.display = "block";
+        };
+
+        function pageStyleOnList() {
+            header.style.backgroundColor = "white";
+            header.style.color = "black";
+            pageControl.style.display = "block";
+            displayList.style.display = "block";
+            displayDetails.style.display = "none";
+        };
 
 
         //Film sorting by selectors
@@ -362,6 +395,7 @@
                 sortedMassive = sortingRating(arrayToSort);
                 movieList.renderMoviesFrontSide(sortedMassive);
                 movieList.drawToDom(movieOutput);
+                cardDetails()
             };
 
             if (selectorForSort == `Show New`) {
@@ -369,6 +403,7 @@
                 sortedMassive = sortingNew(arrayToSort);
                 movieList.renderMoviesFrontSide(sortedMassive);
                 movieList.drawToDom(movieOutput);
+                cardDetails()
             };
 
             if (selectorForSort == `Show Old`) {
@@ -376,6 +411,7 @@
                 sortedMassive = sortingOld(arrayToSort);
                 movieList.renderMoviesFrontSide(sortedMassive);
                 movieList.drawToDom(movieOutput);
+                cardDetails()
             };
 
         }
