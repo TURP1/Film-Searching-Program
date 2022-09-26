@@ -61,6 +61,7 @@ body {
 
 .film-bg-opacity {
     background: linear-gradient(to right, rgba(56, 60, 64, 1), rgba(56, 60, 64, 0.84));
+    border: none;
     color: white;
     height: 100%;
 }

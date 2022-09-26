@@ -34,22 +34,25 @@
     <div class="container-fluid displayDetails">
         <div class="outputDetails row d-flex flex-row "></div>
     </div>
-    
+
 
     <script>
 
         //config
 
         const API_KEY = `3f7c2de3ba0c25a5eeda6588b31fa074`;
-
+        apiKey = `?api_key=${API_KEY}`;
         let searchMovieUrl = `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=`;
         const imageSearch = `https://image.tmdb.org/t/p/w500/`;
         const noImgSrc = `https://t4.ftcdn.net/jpg/05/17/53/57/240_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg`;
         const posterSearch = `https://image.tmdb.org/t/p/w1280/`;
 
         const baseMovieUrl = `https://api.themoviedb.org/3/`;
+        const startTopRatedList = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
+
+
         let queryMovieOrTv;
-        apiKey = `?api_key=${API_KEY}`;
+
 
         //movie
 
@@ -146,6 +149,7 @@
 
         //movie_service
 
+
         function getVideoByText(text) {
             if (!text) {
                 return
@@ -161,10 +165,9 @@
             return fetch(url)
                 .then(result => result.json())
 
-
-
         }
         //Movie Details onclick
+
         function movieDetails(data) {
             const mappingDetailsData = mapDetailsData(data)
 
@@ -322,44 +325,64 @@
         const movieList = new MovieList();
 
 
+
+
         input.addEventListener(`input`, e => {
             const searchText = e.target.value;
             if (!searchText) {
-                movieOutput.innerHTML = ``;
+                toplistAtStart();
                 return;
             }
             getVideoByText(searchText)
                 .then(results => {
                     movieList.renderMoviesFrontSide(results);
                     movieList.drawToDom(movieOutput);
-                    cardDetails()
+                    cardDetails();
                 });
         });
 
-         //card after fetch
-         function cardDetails(){
+        //toplist at start
+        toplistAtStart();
+
+        function toplistAtStart(){
+            fetch(startTopRatedList)
+            .then(r => r.json())
+            .then(results => {
+                console.log(results);
+                movieList.renderMoviesFrontSide(results);
+                movieList.drawToDom(movieOutput);
+                cardDetails();
+            });
+        }
+        
+
+
+        //card after fetch
+        function cardDetails() {
             let cards = document.querySelectorAll(`.movie`);
-                    cards.forEach(card => {
-                        card.addEventListener(`click`, function (e) {
-                            e.preventDefault();
-                            console.log(e.target);
-                            let movieLink = (e.target.closest(`.movie-link`));
-                            const filmOrTv = movieLink.getAttribute("data-tv-or-movie");
-                            const filmId = movieLink.getAttribute("href");
-                            queryMovieOrTv = filmOrTv;
-                            getVideoById(filmId)
-                                .then(result => {
-                                    const movieCard = new MovieCard();
-                                    movieCard.renderMoviesCard(result);
-                                    pageStyleOnDetails();
-                                    movieCard.drawToDom(outputDetails);
-                                    document.querySelector(`.back`).addEventListener(`click`,
-                                    ()=> pageStyleOnList()); 
-                                });
+            cards.forEach(card => {
+                card.addEventListener(`click`, function (e) {
+                    e.preventDefault();
+                    let movieLink = (e.target.closest(`.movie-link`));
+                    let filmOrTv = movieLink.getAttribute("data-tv-or-movie");
+                    if (filmOrTv === `undefined`){
+                        filmOrTv = `movie`
+                    }
+                    const filmId = movieLink.getAttribute("href");
+                    queryMovieOrTv = filmOrTv;
+                    getVideoById(filmId)
+                        .then(result => {
+                            const movieCard = new MovieCard();
+                            movieCard.renderMoviesCard(result);
+                            pageStyleOnDetails();
+                            movieCard.drawToDom(outputDetails);
+                            document.querySelector(`.back`).addEventListener(`click`,
+                                () => pageStyleOnList());
                         });
-                    });
-         }
-                    
+                });
+            });
+        }
+
 
         function pageStyleOnDetails() {
             header.style.backgroundColor = "black";
