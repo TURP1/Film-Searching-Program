@@ -106,8 +106,11 @@ body {
 }
 .displayDetails{
     display: none;
+    padding: 0px;
 }
 .page-control{
     margin-bottom: 30px;
 }
-
+.card{
+    border: none;
+}
