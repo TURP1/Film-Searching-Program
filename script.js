@@ -1,23 +1,15 @@
-
-
 //config
-
 const API_KEY = `3f7c2de3ba0c25a5eeda6588b31fa074`;
 apiKey = `?api_key=${API_KEY}`;
 let searchMovieUrl = `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=`;
 const imageSearch = `https://image.tmdb.org/t/p/w500/`;
 const noImgSrc = `https://t4.ftcdn.net/jpg/05/17/53/57/240_F_517535712_q7f9QC9X6TQxWi6xYZZbMmw5cnLMr279.jpg`;
 const posterSearch = `https://image.tmdb.org/t/p/w1280/`;
-
 const baseMovieUrl = `https://api.themoviedb.org/3/`;
 const startTopRatedList = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
-
-
 let queryMovieOrTv;
 
-
 //movie
-
 function movie(data) {
     const mappingData = mapData(data)
 
@@ -45,7 +37,6 @@ function mapData(data) {
         backdrop_path: getPictureUrl(),
         rating: data.vote_average || `No Rating`,
         date: data.release_date || `Unknown`
-        // || data.first_air_date
     }
     function getPictureUrl() {
         const url = data.backdrop_path;
@@ -59,7 +50,6 @@ function mapData(data) {
 }
 
 //MovieList
-
 class MovieList {
 
     drawToDom(selector) {
@@ -85,7 +75,6 @@ class MovieList {
 }
 
 //MovieCard
-
 class MovieCard {
 
     drawToDom(selector) {
@@ -110,8 +99,6 @@ class MovieCard {
 }
 
 //movie_service
-
-
 function getVideoByText(text) {
     if (!text) {
         return
@@ -128,8 +115,8 @@ function getVideoById(id) {
         .then(result => result.json())
 
 }
-//Movie Details onclick
 
+//Movie Details onclick
 function movieDetails(data) {
     const mappingDetailsData = mapDetailsData(data)
 
@@ -274,7 +261,6 @@ function mapDetailsData(data) {
 
 
 //main
-
 const input = document.querySelector(`.search`);
 const outputDetails = document.querySelector(`.outputDetails`);
 const body = document.querySelector(`body`);
@@ -364,9 +350,7 @@ function pageStyleOnList() {
 
 
 //Film sorting by selectors
-
 let btnSort = document.querySelectorAll(`.btn-sort`);
-
 btnSort.forEach(button => {
     button.addEventListener(`click`, () => {
         sortingBySelector(button.textContent);
@@ -444,7 +428,7 @@ function sortingNew(arrayToSort) {
 function sortingOld(arrayToSort) {
 
     arrayToSort.results.sort((a, b) => {
-        //solving undefined problem ??
+
         if (a.release_date === undefined) {
             a.release_date = NaN;
         };
