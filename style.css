@@ -123,3 +123,8 @@ body {
     left: 0;
     z-index: 100;
 }
+@media (max-width: 690px) {
+    .search {
+        width: 80%;
+    }
+}
