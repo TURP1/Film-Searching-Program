@@ -306,15 +306,15 @@ input.addEventListener(`input`, e => {
 //toplist at start
 toplistAtStart();
 
-function toplistAtStart(){
+function toplistAtStart() {
     fetch(startTopRatedList)
-    .then(r => r.json())
-    .then(results => {
-        console.log(results);
-        movieList.renderMoviesFrontSide(results);
-        movieList.drawToDom(movieOutput);
-        cardDetails();
-    });
+        .then(r => r.json())
+        .then(results => {
+            console.log(results);
+            movieList.renderMoviesFrontSide(results);
+            movieList.drawToDom(movieOutput);
+            cardDetails();
+        });
 }
 
 
@@ -327,7 +327,7 @@ function cardDetails() {
             e.preventDefault();
             let movieLink = (e.target.closest(`.movie-link`));
             let filmOrTv = movieLink.getAttribute("data-tv-or-movie");
-            if (filmOrTv === `undefined`){
+            if (filmOrTv === `undefined`) {
                 filmOrTv = `movie`
             }
             const filmId = movieLink.getAttribute("href");

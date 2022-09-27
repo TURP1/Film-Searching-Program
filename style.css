@@ -1,10 +1,12 @@
 .header {
     text-align: center;
     padding: 20px;
+    color: white;
+    background-color: #000;
 }
 
 .search {
-    width: 40%;
+    width: 45%;
     margin: 0 auto 30px;
     padding: 10px;
 }
@@ -109,8 +111,15 @@ body {
     padding: 0px;
 }
 .page-control{
-    margin-bottom: 30px;
+    margin: 30px 0px;
 }
 .card{
     border: none;
+}
+
+.fixed{
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
